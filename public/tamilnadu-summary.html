@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your TamilNadu Trip Summary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2faff;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #2a91ec, #08b6bf);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    .detail {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+
+    .detail strong {
+      color: #045d75;
+    }
+    
+    .place-name {
+      font-weight: bold;
+      color: #0077b6;
+      font-size: 19px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your TamilNadu Trip Itinerary</h1>
+  <p>Here is your customized travel plan</p>
+</header>
+
+<section>
+  <h2>Trip Summary</h2>
+  <div class="detail"><strong>Start Date:</strong> <span id="startDate"></span></div>
+  <div class="detail"><strong>End Date:</strong> <span id="endDate"></span></div>
+  <div class="detail"><strong>Number of Travelers:</strong> <span id="travelers"></span></div>
+  <div class="detail"><strong>Budget:</strong> <span id="budget"></span></div>
+  <div class="detail"><strong>Travel Type:</strong> <span id="travelType"></span></div>
+  <div class="detail"><strong>Interests:</strong> <span id="interests"></span></div>
+  <section>
+    <h2>Map of Tamil Nadu</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6277966.162626636!2d76.07182916366293!3d10.909433641520522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b00c5823c1b20d3%3A0x5b34be8e565b8e8c!2sTamil%20Nadu!5e0!3m2!1sen!2sin!4v1713439982111!5m2!1sen!2sin" 
+      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+      const plan = JSON.parse(localStorage.getItem("tamilnaduPlan"));
+      
+      if (plan) {
+        document.getElementById("startDate").textContent = plan.startDate;
+        document.getElementById("endDate").textContent = plan.endDate;
+        document.getElementById("travelers").textContent = plan.travelers;
+        document.getElementById("budget").textContent = `₹${plan.budget}`;
+        document.getElementById("travelType").textContent = plan.travelType;
+        document.getElementById("interests").textContent = plan.interests.join(", ");
+        
+        const destinations = {
+          "Temples": [
+            "<span class='place-name'>Meenakshi Temple</span> in Madurai, an architectural marvel dedicated to Goddess Meenakshi, where intricate carvings and spiritual vibrance welcome thousands of devotees every day.",
+            "<span class='place-name'>Brihadeeswara Temple</span> in Thanjavur, a UNESCO World Heritage site built by Raja Raja Chola I, known for its grandeur and massive Shiva lingam.",
+            "<span class='place-name'>Rameswaram Temple</span>, a sacred pilgrimage site with long corridors and 22 holy wells for ritual purification.",
+            "<span class='place-name'>Shore Temple</span> in Mahabalipuram, a stunning example of Pallava architecture standing gracefully by the Bay of Bengal.",
+            "<span class='place-name'>Kanchipuram Temples</span>, showcasing ancient Dravidian style with rich cultural heritage in the 'City of Thousand Temples'.",
+            "<span class='place-name'>Ekambareswarar Temple</span> in Kanchipuram, one of the five major Shiva temples representing the element earth, featuring a 3,500-year-old mango tree.",
+            "<span class='place-name'>Arunachaleswarar Temple</span> in Tiruvannamalai, a massive temple complex dedicated to Lord Shiva with towering rajagopurams and the Karthigai Deepam festival.",
+            "<span class='place-name'>Nataraja Temple</span> in Chidambaram, where the cosmic dance of Lord Shiva is celebrated with ancient rituals and a unique golden roof.",
+            "<span class='place-name'>Kumbakonam Temples</span>, a treasury of sacred sites with the Mahamaham Tank and numerous shrines dedicated to various deities.",
+            "<span class='place-name'>Srirangam Temple</span> in Trichy, the largest functioning Hindu temple in the world with 21 magnificent gopurams and seven concentric walls.",
+            "<span class='place-name'>Thiruchendur Murugan Temple</span>, one of the six abodes of Lord Muruga, situated on the shoreline facing the Gulf of Mannar.",
+            "<span class='place-name'>Kanchi Kailasanathar Temple</span>, the oldest temple in Kanchipuram built by the Pallava kings with exquisite sandstone sculptures.",
+            "<span class='place-name'>Ramanathaswamy Temple</span> in Rameswaram, famous for its 1,200 carved pillars forming magnificent corridors and religious significance in the Ramayana epic."
+          ],
+          "Hill Stations": [
+            "<span class='place-name'>Ooty</span>, the 'Queen of Hill Stations', where lush tea gardens, cool breeze, and colonial charm offer a perfect mountain escape.",
+            "<span class='place-name'>Kodaikanal</span>, a serene hill town with misty cliffs, beautiful lakes, and enchanting pine forests.",
+            "<span class='place-name'>Yercaud</span>, a hidden gem in the Eastern Ghats known for its coffee plantations and scenic viewpoints like Lady's Seat.",
+            "<span class='place-name'>Valparai</span>, an untouched haven in the Anamalai Hills known for its green tea estates and quiet wildlife sightings.",
+            "<span class='place-name'>Coonoor</span>, a charming hill station near Ooty with the famous Nilgiri Mountain Railway, sprawling tea estates, and the stunning Sim's Park.",
+            "<span class='place-name'>Kotagiri</span>, one of the oldest hill stations in the Nilgiris with pleasant weather year-round, offering views of the Kotagiri Valley.",
+            "<span class='place-name'>Yelagiri</span>, a small hill station perfect for weekend getaways with gentle trekking trails and the tranquil Punganoor Lake.",
+            "<span class='place-name'>Meghamalai</span>, known as the 'High Wavy Mountains', offering misty landscapes, dense forests, and scenic tea plantations off the beaten path.",
+            "<span class='place-name'>Javadi Hills</span>, a serene hill range in the Eastern Ghats with abundant waterfalls, tribal villages, and rich biodiversity.",
+            "<span class='place-name'>Kolli Hills</span>, featuring the challenging 70 continuous hairpin bends to reach the top, ancient temples, and the majestic Agaya Gangai waterfall."
+          ],
+          "Beaches": [
+            "<span class='place-name'>Marina Beach</span> in Chennai, India's longest beach offering golden sands, street food, and vibrant local life.",
+            "<span class='place-name'>Mahabalipuram Beach</span>, lined with ancient rock-cut sculptures and known for its peaceful vibe and surf-worthy waves.",
+            "<span class='place-name'>Rameswaram Beach</span>, a tranquil spot perfect for sunrise views and quiet reflection near the temple town.",
+            "<span class='place-name'>Velankanni Beach</span>, beside the Basilica of Our Lady of Good Health, where pilgrims combine faith and relaxation.",
+            "<span class='place-name'>Covelong Beach</span> (Kovalam), a fishing village turned beach destination known for water sports and the remains of a Dutch fort.",
+            "<span class='place-name'>Elliot's Beach</span> in Chennai, a less crowded alternative to Marina with the famous Karl Schmidt Memorial and beachside cafes.",
+            "<span class='place-name'>Kanyakumari Beach</span>, where three oceans meet and visitors can witness both sunrise and sunset from the same spot.",
+            "<span class='place-name'>Dhanushkodi Beach</span>, a ghost town beach with ruins from the 1964 cyclone and mythological significance from the Ramayana.",
+            "<span class='place-name'>Silver Beach</span> in Cuddalore, with its silvery sands and the historic Cuddalore Fort nearby, offering tranquil views.",
+            "<span class='place-name'>Poompuhar Beach</span>, a historic site where the ancient Chola port city once stood, now a quiet beach with archaeological importance.",
+            "<span class='place-name'>Thiruchendur Beach</span>, next to the famous Murugan Temple with religious significance and palm-fringed coastline.",
+            "<span class='place-name'>Muttom Beach</span>, known for its rocky terrain, historic lighthouse, and breathtaking views of the sunset."
+          ],
+          "Cultural Heritage": [
+            "<span class='place-name'>Thanjavur Palace</span>, a historical complex showcasing royal architecture, art galleries, and Saraswathi Mahal Library.",
+            "<span class='place-name'>Chettinad Mansions</span>, opulent ancestral homes famous for their intricate woodwork and unique regional cuisine.",
+            "<span class='place-name'>Mahabalipuram Monuments</span>, stone-carved wonders from the Pallava dynasty, including Arjuna's Penance and the Five Rathas.",
+            "<span class='place-name'>Thirumalai Nayakkar Palace</span> in Madurai, blending Dravidian and Islamic styles, once the seat of a powerful dynasty.",
+            "<span class='place-name'>Padmanabhapuram Palace</span> near Kanyakumari, an exquisite wooden palace with intricate carvings and royal heritage.",
+            "<span class='place-name'>Danish Fort</span> in Tranquebar, a remnant of colonial history with European architecture along the Coromandel Coast.",
+            "<span class='place-name'>Vellore Fort</span>, a massive 16th-century fort with a temple, mosque, church, and museum showcasing diverse cultural influences.",
+            "<span class='place-name'>Gingee Fort</span>, known as the 'Troy of the East', featuring three hillocks connected by walls with magnificent views.",
+            "<span class='place-name'>Madras High Court</span>, a stunning Indo-Saracenic building exemplifying British colonial architecture in red sandstone.",
+            "<span class='place-name'>Kazhugumalai Jain Beds</span>, ancient rock-cut sculptures and caves with exquisite Jain artwork from the 8th century.",
+            "<span class='place-name'>Poompuhar Archaeological Site</span>, where excavations reveal the remains of an ancient port city mentioned in Tamil literature.",
+            "<span class='place-name'>Thirukkokarnam Ancient Site</span>, featuring megalithic burial sites and artifacts dating back to the Iron Age."
+          ],
+          "Wildlife": [
+            "<span class='place-name'>Mudumalai Wildlife Sanctuary</span>, where you might spot elephants, tigers, and exotic birds amidst dense forests.",
+            "<span class='place-name'>Anamalai Tiger Reserve</span>, home to majestic Bengal tigers, leopards, and a rich ecosystem of flora and fauna.",
+            "<span class='place-name'>Vedanthangal Bird Sanctuary</span>, a paradise for bird watchers with thousands of migratory birds flocking each winter.",
+            "<span class='place-name'>Point Calimere Wildlife Sanctuary</span>, known for its blackbuck population and serene coastal wetland landscapes.",
+            "<span class='place-name'>Gulf of Mannar Marine National Park</span>, rich in marine biodiversity with coral reefs, dugongs, and sea turtles across 21 islands.",
+            "<span class='place-name'>Kalakkad Mundanthurai Tiger Reserve</span>, the second-largest protected area in Tamil Nadu with diverse wildlife and pristine forests.",
+            "<span class='place-name'>Guindy National Park</span>, one of the smallest national parks in India located within Chennai city, home to jackals, deer, and various birds.",
+            "<span class='place-name'>Sathyamangalam Wildlife Sanctuary</span>, an important tiger habitat and elephant corridor connecting the Eastern and Western Ghats.",
+            "<span class='place-name'>Kodaikanal Wildlife Sanctuary</span>, surrounding the popular hill station with dense shola forests, endemic species, and spectacular views.",
+            "<span class='place-name'>Pichavaram Mangrove Forest</span>, the second largest mangrove forest in the world, offering boat rides through intricate waterways.",
+            "<span class='place-name'>Koonthankulam Bird Sanctuary</span>, a breeding ground for numerous migratory birds including painted storks and pelicans.",
+            "<span class='place-name'>Vallanadu Blackbuck Sanctuary</span>, a dedicated conservation area for the endangered blackbuck antelope with arid scrubland habitat."
+          ],
+          "Waterfalls": [
+            "<span class='place-name'>Hogenakkal Falls</span>, known as the 'Niagara of India' with medicinal bathing pools and traditional coracle boat rides.",
+            "<span class='place-name'>Courtallam Falls</span>, famous for its therapeutic qualities with nine different cascades spread across lush green landscapes.",
+            "<span class='place-name'>Catherine Falls</span> in Kotagiri, a double-cascaded waterfall with a dramatic drop of 250 feet surrounded by tea plantations.",
+            "<span class='place-name'>Kiliyur Falls</span> in Yercaud, a seasonal waterfall plunging 300 feet into a picturesque valley accessible by trek.",
+            "<span class='place-name'>Monkey Falls</span> near Pollachi, a refreshing stopover on the way to Valparai with crystal clear waters and natural pools.",
+            "<span class='place-name'>Agaya Gangai Falls</span> in Kolli Hills, requiring a challenging trek of 1,300 steps to reach its magnificent 300-foot drop.",
+            "<span class='place-name'>Thirparappu Falls</span> in Kanyakumari district, featuring a man-made pool at the base and ideal for family picnics.",
+            "<span class='place-name'>Suruli Falls</span> near Theni, a year-round waterfall with a temple cave and sulphur springs known for medicinal properties.",
+            "<span class='place-name'>Kumbakarai Falls</span> in Theni district, a two-stage waterfall with natural fish massage pools and stunning valley views.",
+            "<span class='place-name'>Thalaiyar Falls</span> (Rat Tail Falls), the third-highest waterfall in India with a 975-foot single drop visible from Kodaikanal."
+          ],
+          "Offbeat Destinations": [
+            "<span class='place-name'>Tharangambadi</span> (Tranquebar), a former Danish colony with well-preserved colonial architecture and tranquil beaches.",
+            "<span class='place-name'>Kazhugumalai</span>, a hidden gem with ancient Jain rock carvings and sculptures dating back to the 8th century.",
+            "<span class='place-name'>Thiruvanamalai</span>, a spiritual center around the sacred Arunachala Hill, known for the Karthigai Deepam festival.",
+            "<span class='place-name'>Chettinad Region</span>, featuring palatial mansions, unique architecture, and one of India's most distinctive cuisines.",
+            "<span class='place-name'>Sitanavasal Cave</span>, a 2nd-century Jain cave temple with rare Pandyan-era vegetable-dye paintings still visible.",
+            "<span class='place-name'>Alamparai Fort</span>, a 17th-century ruins of a coastal fort built by the Mughals, now partially submerged in the sea.",
+            "<span class='place-name'>Pulicat Lake</span>, the second largest brackish water lagoon in India, known for flamingos and colonial Dutch history.",
+            "<span class='place-name'>Thillai Kali Amman Temple</span> in Chidambaram, standing opposite the famous Nataraja Temple with unique architecture.",
+            "<span class='place-name'>Pitchavaram Mangrove Forest</span>, an intricate network of waterways through dense mangroves ideal for boating.",
+            "<span class='place-name'>Kovilpatti Kadalai Mittai</span>, a town famous for its unique peanut candy with a Geographical Indication tag.",
+            "<span class='place-name'>Thirukkurungudi</span>, a temple town with elaborate Nambi traditions and the rare 9-day Garuda Sevai festival."
+          ]
+        };
+        
+  
+
+
+
+        if (!plan.duration) {
+          const startDate = new Date(plan.startDate);
+          const endDate = new Date(plan.endDate);
+          plan.duration = Math.ceil((endDate - startDate) / (1000 * 3600 * 24));
+        }
+        
+        const itineraryDiv = document.createElement("div");
+        itineraryDiv.innerHTML = `<h2>Your Perfect TamilNadu Adventure</h2>`;
+        
+        const summaryParagraph = document.createElement("p");
+        summaryParagraph.style.lineHeight = "1.6";
+        summaryParagraph.style.fontSize = "18px";
+        summaryParagraph.style.marginBottom = "25px";
+        
+        const highlights = [];
+        plan.interests.forEach(interest => {
+          const options = destinations[interest] || ["a hidden gem"];
+          const sample = options[Math.floor(Math.random() * options.length)];
+          // Extract just the text content without the span styling
+          const plainText = sample.replace(/<span[^>]*>|<\/span>/g, "");
+          highlights.push(`${interest.toLowerCase()} experiences like ${plainText.toLowerCase()}`);
+        });
+  
+        let intro = `Embark on a mesmerizing ${plan.duration}-day journey through Tamil Nadu, a land where timeless temples, misty hill stations, golden beaches, and cultural treasures await. `;
+        if (highlights.length === 1) {
+          intro += `This adventure highlights ${highlights[0]}`;
+        } else if (highlights.length === 2) {
+          intro += `This adventure features ${highlights[0]} and ${highlights[1]}`;
+        } else {
+          const last = highlights.pop();
+          intro += `This adventure offers ${highlights.join(', ')}, and ${last}`;
+        }
+        intro += `. Designed to reflect your ${plan.travelType.toLowerCase()} travel style and budget of ₹${plan.budget}, this trip promises unforgettable moments at every turn.`;
+  
+        summaryParagraph.textContent = intro;
+        itineraryDiv.appendChild(summaryParagraph);
+        
+        const dayByDayHeading = document.createElement("h3");
+        dayByDayHeading.textContent = "Your Day-by-Day Adventure";
+        dayByDayHeading.style.color = "#0077b6";
+        dayByDayHeading.style.marginTop = "30px";
+        itineraryDiv.appendChild(dayByDayHeading);
+        
+        const dayByDayParagraph = document.createElement("div");
+        dayByDayParagraph.style.lineHeight = "1.6";
+        dayByDayParagraph.style.fontSize = "17px";
+        
+        for (let day = 1; day <= plan.duration; day++) {
+          const interest = plan.interests[(day - 1) % plan.interests.length];
+          const options = destinations[interest] || ["a local adventure spot full of charm"];
+          const activity = options[(day - 1) % options.length];
+          
+          const dayDiv = document.createElement("div");
+          dayDiv.className = "detail";
+          dayDiv.innerHTML = `<strong>Day ${day}:</strong> ${activity}`;
+          dayByDayParagraph.appendChild(dayDiv);
+        }
+        
+        itineraryDiv.appendChild(dayByDayParagraph);
+        document.querySelector("section").appendChild(itineraryDiv);
+      } else {
+        document.querySelector("section").innerHTML +=
+          "<p style='color: red;'>No plan found. Please go back and fill the form.</p>";
+      }
+  });
+  </script>
+  <footer style="text-align: center; padding: 20px;">
+    <p>© 2025 TamilNadu Explorer. Crafted with ❤️ for your perfect getaway.</p>
+  </footer>
+</body>
+</html>
