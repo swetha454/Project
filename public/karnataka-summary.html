@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Karnataka Trip Summary</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f0f8ff; margin: 0; }
+    header { background: linear-gradient(to right, #1e3a8a, #3b82f6); color: white; padding: 40px; text-align: center; }
+    section { max-width: 800px; margin: 40px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    h2 { color: #1e40af; margin-bottom: 20px; }
+    .detail { margin: 15px 0; font-size: 18px; }
+    .detail strong { color: #1d4ed8; }
+    .place-name { font-weight: bold; color: #1e3a8a; font-size: 19px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your Karnataka Trip Itinerary</h1>
+  <p>Here is your customized travel plan</p>
+</header>
+
+<section>
+  <h2>Trip Summary</h2>
+  <div class="detail"><strong>Start Date:</strong> <span id="startDate"></span></div>
+  <div class="detail"><strong>End Date:</strong> <span id="endDate"></span></div>
+  <div class="detail"><strong>Number of Travelers:</strong> <span id="travelers"></span></div>
+  <div class="detail"><strong>Budget:</strong> <span id="budget"></span></div>
+  <div class="detail"><strong>Travel Type:</strong> <span id="travelType"></span></div>
+  <div class="detail"><strong>Interests:</strong> <span id="interests"></span></div>
+  <section>
+    <h2>Map of Karnataka</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930541.2045374136!2d74.41931319999999!3d14.56350615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb92f46cfdfb6c3%3A0xf0b88d20ec46f7df!2sKarnataka!5e0!3m2!1sen!2sin!4v1713452012012!5m2!1sen!2sin" 
+      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+</section>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const plan = JSON.parse(localStorage.getItem("karnatakaPlan"));
+ 
+    if (plan) {
+      const { startDate, endDate, travelers, budget, travelType, interests } = plan;
+ 
+      document.getElementById("startDate").textContent = startDate;
+      document.getElementById("endDate").textContent = endDate;
+      document.getElementById("travelers").textContent = travelers;
+      document.getElementById("budget").textContent = `₹${budget}`;
+      document.getElementById("travelType").textContent = travelType;
+      document.getElementById("interests").textContent = interests.join(", ");
+ 
+      if (!plan.duration) {
+        const s = new Date(startDate), e = new Date(endDate);
+        plan.duration = Math.ceil((e - s) / (1000 * 3600 * 24));
+      }
+ 
+      const destinations = {
+        "Heritage": [
+          "<span class='place-name'>Hampi</span> – Wander through ancient ruins, intricately carved temples, and colossal boulders that whisper the glory of the Vijayanagara Empire.",
+          "<span class='place-name'>Badami Caves</span> – Explore the 6th-century rock-cut cave temples featuring stunning sculptures and a serene view of the Agastya Lake.",
+          "<span class='place-name'>Aihole & Pattadakal</span> – Visit these UNESCO heritage sites, rich with Chalukyan architecture, each temple telling stories from Hindu epics.",
+          "<span class='place-name'>Mysore Palace</span> – Admire the Indo-Saracenic marvel glowing with grandeur, once home to the Wodeyar dynasty.",
+          "<span class='place-name'>Halebidu & Belur Temples</span> – Experience the exquisite Hoysala architecture with mesmerizing sculptures carved in soapstone.",
+          "<span class='place-name'>Shravanabelagola</span> – Witness the towering statue of Bahubali, a sacred Jain pilgrimage site surrounded by hills.",
+          "<span class='place-name'>Somnathpur Temple</span> – A less-crowded masterpiece, known for its symmetrical architecture and beautiful star-shaped structure.",
+          "<span class='place-name'>Bijapur</span> – Marvel at the Gol Gumbaz, the second largest dome in the world, with its remarkable whispering gallery and Islamic architecture.",
+          "<span class='place-name'>Bidar</span> – Explore the magnificent Bidar Fort with its Persian influence and the unique Bidriware metalcraft, a traditional art form.",
+          "<span class='place-name'>Srirangapatna</span> – Walk through the historic island town that was once Tipu Sultan's capital, featuring his summer palace and the Sri Ranganathaswamy Temple.",
+          "<span class='place-name'>Chitradurga Fort</span> – Discover this massive hill fortress with its ingenious seven-tiered defensive structure and legends of brave warriors.",
+          "<span class='place-name'>Talakadu</span> – Visit this mysterious town where ancient temples are buried under sand dunes, with a legendary curse adding to its mystique.",
+          "<span class='place-name'>Keshava Temple, Somanathapura</span> – Admire this 13th-century architectural marvel with intricate carvings depicting scenes from Hindu mythology."
+        ],
+        "Hill Stations": [
+          "<span class='place-name'>Coorg</span> – Enjoy the scenic beauty of rolling coffee estates, misty hills, and vibrant Kodava culture.",
+          "<span class='place-name'>Chikmagalur</span> – Sip on fresh coffee while overlooking lush green mountains and trekking through peaceful forests.",
+          "<span class='place-name'>Agumbe</span> – Called the Cherrapunji of the South, it's ideal for sunset views and spotting king cobras in the rainforest.",
+          "<span class='place-name'>Kudremukh</span> – Trek through wild meadows and mist-covered trails in this biodiversity hotspot of the Western Ghats.",
+          "<span class='place-name'>Sakleshpur</span> – A hidden gem offering serene landscapes, green valleys, and a break from the bustle of cities.",
+          "<span class='place-name'>BR Hills</span> – A tranquil hill sanctuary that blends wildlife and spirituality with panoramic forest views.",
+          "<span class='place-name'>Kemmanagundi</span> – A hill station dotted with gardens, waterfalls, and excellent viewpoints for peaceful retreats.",
+          "<span class='place-name'>Nandi Hills</span> – Just a short drive from Bangalore, this ancient hill fortress offers breathtaking sunrise views and historical temples.",
+          "<span class='place-name'>Skandagiri</span> – Famous for night treks leading to a mesmerizing sunrise view above the clouds, perfect for adventure enthusiasts.",
+          "<span class='place-name'>Kodachadri</span> – A challenging trek through dense forests leads to this peak where mythology and nature intertwine at the ancient Mookambika Temple.",
+          "<span class='place-name'>Mullayanagiri</span> – The highest peak in Karnataka offers panoramic views of the Western Ghats and challenging trekking trails.",
+          "<span class='place-name'>Kundadri Hills</span> – A peaceful hill with a 17th-century Jain temple, offering stunning sunset views and spiritual tranquility.",
+          "<span class='place-name'>Tadiandamol</span> – The highest peak in Coorg provides challenging treks through coffee plantations and shola forests."
+        ],
+        "Nature & Wildlife": [
+          "<span class='place-name'>Kabini Wildlife Sanctuary</span> – Go on a jungle safari to spot elephants, leopards, and maybe even the elusive black panther.",
+          "<span class='place-name'>Bandipur National Park</span> – A tiger reserve nestled at the foothills of the Nilgiris, ideal for thrilling safaris.",
+          "<span class='place-name'>Nagarhole National Park</span> – Explore this rich ecosystem where riverbanks, teak trees, and wildlife come alive together.",
+          "<span class='place-name'>Bhadra Wildlife Sanctuary</span> – Perfect for birdwatching, boat rides, and capturing views of the Western Ghats.",
+          "<span class='place-name'>Bannerghatta Biological Park</span> – Experience a blend of zoo, butterfly park, and jungle safari near Bangalore.",
+          "<span class='place-name'>Dandeli</span> – An adventure-packed destination with white-water rafting, nature trails, and river crossings.",
+          "<span class='place-name'>Ranganathittu Bird Sanctuary</span> – Boat through this riverine ecosystem to spot rare birds, crocodiles, and otters in their natural habitat.",
+          "<span class='place-name'>Dubare Elephant Camp</span> – Interact with rescued elephants, help bathe them, and learn about conservation efforts in this unique sanctuary.",
+          "<span class='place-name'>Sharavathi Valley</span> – Trek through dense rainforests to discover hidden waterfalls and spectacular viewpoints in this biodiversity hotspot.",
+          "<span class='place-name'>Aghanashini Conservation Reserve</span> – Explore mangrove forests and spot rare bird species in this coastal ecosystem.",
+          "<span class='place-name'>Cauvery Wildlife Sanctuary</span> – A riverside wildlife haven where mahseer fish, crocodiles, and diverse bird species thrive.",
+          "<span class='place-name'>Daroji Sloth Bear Sanctuary</span> – The only sanctuary dedicated to sloth bears in India, located near Hampi."
+        ],
+        "Beaches": [
+          "<span class='place-name'>Gokarna</span> – Relax on serene beaches with golden sand, perfect for yoga, treks, and beachside cafes.",
+          "<span class='place-name'>Om Beach</span> – Named after its Om-shaped shoreline, this beach offers scenic views and thrilling water sports.",
+          "<span class='place-name'>Murudeshwar</span> – Visit the world's second-tallest Shiva statue by the Arabian Sea at this spiritual beach town.",
+          "<span class='place-name'>Kundapura</span> – A lesser-known coastal town with peaceful beaches and ancient temples.",
+          "<span class='place-name'>Karwar</span> – Known for calm blue waters, Karwar offers a great mix of nature, seafood, and colonial history.",
+          "<span class='place-name'>Tadadi Beach</span> – A rustic beach popular among locals and surfers for its rugged natural charm.",
+          "<span class='place-name'>Malpe Beach</span> – Enjoy boat rides to St. Mary's Island or just unwind under coconut palms on this breezy beach.",
+          "<span class='place-name'>Paradise Beach, Gokarna</span> – A secluded beach accessible only by boat or trek, offering pristine waters and tranquil surroundings.",
+          "<span class='place-name'>Kudle Beach</span> – A crescent-shaped beach perfect for swimming, with bohemian cafes and beach huts for relaxation.",
+          "<span class='place-name'>Kaup Beach</span> – Known for its historic lighthouse and serene atmosphere, ideal for watching magical sunsets.",
+          "<span class='place-name'>Netrani Island</span> – An offshore island famous for scuba diving and snorkeling with vibrant coral reefs and marine life.",
+          "<span class='place-name'>Devbagh Beach</span> – A beach island with golden sands and crystal-clear waters, offering water sports and dolphin sightings.",
+          "<span class='place-name'>Maravanthe Beach</span> – A unique beach where the Arabian Sea on one side and the Souparnika River on the other create a mesmerizing landscape."
+        ],
+        "City Attractions": [
+          "<span class='place-name'>Lalbagh Botanical Garden</span> – Walk through one of India's oldest botanical gardens with exotic flora and a glasshouse.",
+          "<span class='place-name'>Bangalore Palace</span> – Tour a Tudor-style palace inspired by Windsor Castle with royal portraits and lavish halls.",
+          "<span class='place-name'>Vidhana Soudha</span> – Snap a photo in front of this iconic granite building that houses Karnataka's legislature.",
+          "<span class='place-name'>ISKCON Temple Bangalore</span> – Feel the spiritual aura and enjoy the modern architecture of this massive temple complex.",
+          "<span class='place-name'>UB City Mall</span> – Dive into Bangalore's upscale shopping, fine dining, and rooftop lounges.",
+          "<span class='place-name'>Brigade Road</span> – A bustling commercial hub perfect for shopping, eating, and soaking in urban vibes.",
+          "<span class='place-name'>Wonderla</span> – A thrilling amusement park offering water rides, roller coasters, and all-day fun for the whole family.",
+          "<span class='place-name'>Cubbon Park</span> – A green sanctuary in the heart of Bangalore with historic buildings, jogger's trails, and weekend cultural events.",
+          "<span class='place-name'>Tipu Sultan's Summer Palace</span> – Explore this teak wood palace with Indo-Islamic architecture and history exhibits from the ruler's era.",
+          "<span class='place-name'>Commercial Street</span> – Navigate through this bustling marketplace for traditional handicrafts, clothing, jewelry, and street food.",
+          "<span class='place-name'>National Gallery of Modern Art</span> – Appreciate Indian art spanning from the 18th century to contemporary works in a colonial mansion.",
+          "<span class='place-name'>St. Mary's Basilica</span> – Visit Bangalore's oldest church with its gothic architecture and stunning stained glass windows.",
+          "<span class='place-name'>Jawaharlal Nehru Planetarium</span> – Gaze at the stars and enjoy interactive astronomy exhibits at this educational attraction."
+        ],
+        "Waterfalls": [
+          "<span class='place-name'>Jog Falls</span> – Marvel at India's second-highest plunge waterfall, where the Sharavathi River makes a majestic 830-foot drop.",
+          "<span class='place-name'>Abbey Falls</span> – Listen to the soothing sounds of cascading water surrounded by coffee and spice plantations in Coorg.",
+          "<span class='place-name'>Iruppu Falls</span> – Visit this sacred waterfall in the Brahmagiri range, believed to cleanse sins in its holy waters.",
+          "<span class='place-name'>Hebbe Falls</span> – Trek through coffee estates to reach this two-tiered waterfall with medicinal properties in its waters.",
+          "<span class='place-name'>Magod Falls</span> – Watch as the Bedti River plunges 650 feet in two stunning cascades surrounded by lush green forests.",
+          "<span class='place-name'>Shivanasamudra Falls</span> – Witness the Kaveri River split into twin waterfalls, creating one of the continent's earliest hydroelectric power stations.",
+          "<span class='place-name'>Kalhatti Falls</span> – Hike to this 400-foot cascade near Kemmanagundi with the ancient Veerabhadreshwara Temple nearby."
+        ],
+        "Spiritual Destinations": [
+          "<span class='place-name'>Udupi Sri Krishna Temple</span> – Visit this 13th-century temple famous for its unique window-based worship and exquisite carvings.",
+          "<span class='place-name'>Mookambika Temple, Kollur</span> – Seek blessings at this powerful Shakti pilgrimage center nestled in the Western Ghats.",
+          "<span class='place-name'>Kukke Subramanya Temple</span> – Experience one of the most sacred serpent temples, believed to cure dosha and fulfill wishes.",
+          "<span class='place-name'>Gokarna Mahabaleshwar Temple</span> – Visit this ancient pilgrim center housing one of the most powerful Shiva Lingas.",
+          "<span class='place-name'>Dharmasthala</span> – Discover this unique pilgrimage center where Jainism and Hinduism coexist harmoniously.",
+          "<span class='place-name'>Sringeri Sharada Peetham</span> – Visit one of the four mathas established by Adi Shankaracharya at this serene riverside location.",
+          "<span class='place-name'>Nanjangud Srikanteshwara Temple</span> – Explore this massive temple complex dedicated to Lord Shiva, known as the 'Kashi of the South'."
+        ]
+      };
+ 
+      const itineraryDiv = document.createElement("div");
+      itineraryDiv.innerHTML = `<h2>Your Perfect Karnataka Adventure</h2>`;
+ 
+      const summary = document.createElement("p");
+      summary.style.lineHeight = "1.6";
+      summary.style.fontSize = "18px";
+      summary.style.marginBottom = "25px";
+ 
+      let intro = `Gear up for a mesmerizing ${plan.duration}-day journey across Karnataka, blending royal heritage, breathtaking hills, rich wildlife, and stunning beaches. From exploring the magnificent ruins of Hampi to sipping coffee in the misty valleys of Coorg, every stop is chosen based on your love for ${interests.join(", ").toLowerCase()}. This itinerary is tailored for your ${travelType.toLowerCase()} vibe and fits right into your budget of ₹${budget}, promising an unforgettable South Indian escapade.`;
+      summary.textContent = intro;
+      itineraryDiv.appendChild(summary);
+ 
+      const heading = document.createElement("h3");
+      heading.textContent = "Your Day-by-Day Adventure";
+      heading.style.color = "#1e40af";
+      heading.style.marginTop = "30px";
+      itineraryDiv.appendChild(heading);
+ 
+      const dayDetails = document.createElement("div");
+      dayDetails.style.lineHeight = "1.6";
+      dayDetails.style.fontSize = "17px";
+ 
+      for (let day = 1; day <= plan.duration; day++) {
+        const interest = interests[(day - 1) % interests.length];
+        const options = destinations[interest] || ["Explore more of Karnataka's local treasures and hidden gems."];
+        const detailedDescription = options[(day - 1) % options.length];
+ 
+        const dayPlan = document.createElement("div");
+        dayPlan.className = "detail";
+        dayPlan.innerHTML = `<strong>Day ${day}:</strong> ${detailedDescription}`;
+        dayDetails.appendChild(dayPlan);
+      }
+ 
+      itineraryDiv.appendChild(dayDetails);
+      document.querySelector("section").appendChild(itineraryDiv);
+    } else {
+      document.querySelector("section").innerHTML +=
+        "<p style='color: red;'>No Karnataka plan found. Please go back and fill the form.</p>";
+    }
+  });
+  </script>
+<footer style="text-align: center; padding: 20px;">
+  <p>© 2025 Karnataka Explorer. Crafted with ❤️ for your perfect getaway.</p>
+</footer>
+</body>
+</html>
