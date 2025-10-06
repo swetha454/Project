@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Explore Tamil Nadu - Smart Planner</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #e65c00, #f9d423);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #d35400;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    ul {
+      font-size: 18px;
+    }
+
+    button {
+      background-color: #e67e22;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #af4c00;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Tamil Nadu</h1>
+  <p>Explore Ancient Temples, Beaches & Cultural Heritage</p>
+</header>
+
+<section>
+  <h2>Famous Cities & Places</h2>
+  <ul>
+    <li>Chennai</li>
+    <li>Madurai</li>
+    <li>Rameswaram</li>
+    <li>Kanyakumari</li>
+    <li>Ooty</li>
+  </ul>
+
+  <h2>Top Sightseeing Spots</h2>
+  <ul>
+    <li>Meenakshi Temple</li>
+    <li>Marina Beach</li>
+    <li>Brihadeeswara Temple</li>
+    <li>Nilgiri Hills</li>
+  </ul>
+ 
+  
+
+  <img src="https://i0.wp.com/www.tusktravel.com/blog/wp-content/uploads/2019/10/meenakshi-temple-madurai.jpg?resize=800%2C533&ssl=1" alt="Tamil Nadu Temple" />
+  <a href="plantamilnadu.html">
+    <button>Plan This Trip</button>
+  </a>
+</section>
+<!-- Inside <head> -->
+  <script>
+    function savePlan(event) {
+      event.preventDefault(); // Prevent form submission
+  
+      // Get values from form inputs
+      const startDate = document.getElementById("start-date").value;
+      const endDate = document.getElementById("end-date").value;
+      const travelers = document.getElementById("travelers").value;
+      const budget = document.getElementById("budget").value;
+      const travelType = document.getElementById("travel-type").value;
+  
+      // Get multiple selected interests
+      const interestsSelect = document.getElementById("interests");
+      const interests = Array.from(interestsSelect.selectedOptions).map(opt => opt.value);
+  
+      // Save to localStorage
+      localStorage.setItem("tamilnaduPlan", JSON.stringify({
+        startDate,
+        endDate,
+        travelers,
+        budget,
+        travelType,
+        interests
+      }));
+  
+      // Redirect to summary page
+      window.location.href = "tamilnadu-summary.html";
+    }
+  </script>
+  
+</body>
+</html>
