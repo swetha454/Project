@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Telangana Trip Summary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2faff;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #2a91ec, #08b6bf);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    .detail {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+
+    .detail strong {
+      color: #045d75;
+    }
+    
+    .place-name {
+      font-weight: bold;
+      color: #045d75;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your Telangana Trip Itinerary</h1>
+  <p>Here is your customized travel plan</p>
+</header>
+
+<section>
+  <h2>Trip Summary</h2>
+  <div class="detail"><strong>Start Date:</strong> <span id="startDate"></span></div>
+  <div class="detail"><strong>End Date:</strong> <span id="endDate"></span></div>
+  <div class="detail"><strong>Number of Travelers:</strong> <span id="travelers"></span></div>
+  <div class="detail"><strong>Budget:</strong> <span id="budget"></span></div>
+  <div class="detail"><strong>Travel Type:</strong> <span id="travelType"></span></div>
+  <div class="detail"><strong>Interests:</strong> <span id="interests"></span></div>
+  <section>
+    <h2>Map of Telangana</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930541.2045374136!2d78.4784!3d17.0228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb92f46cfdfb6c3%3A0xf0b88d20ec46f7df!2sTelangana!5e0!3m2!1sen!2sin!4v1713452012012!5m2!1sen!2sin" 
+      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+  
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const plan = JSON.parse(localStorage.getItem("telanganaPlan"));
+  
+    if (plan) {
+      document.getElementById("startDate").textContent = plan.startDate;
+      document.getElementById("endDate").textContent = plan.endDate;
+      document.getElementById("travelers").textContent = plan.travelers;
+      document.getElementById("budget").textContent = `₹${plan.budget}`;
+      document.getElementById("travelType").textContent = plan.travelType;
+      document.getElementById("interests").textContent = plan.interests.join(", ");
+  
+      const destinations = {
+        "Heritage & History": [
+          "<span class='place-name'>Golconda Fort</span>, a majestic citadel echoing tales of the Qutb Shahi dynasty and offering panoramic views of Hyderabad's skyline.",
+          "<span class='place-name'>Charminar</span>, an iconic 16th-century structure that stands tall in the heart of Hyderabad's Old City, blending Islamic architecture with vibrant bazaar life.",
+          "<span class='place-name'>Qutb Shahi Tombs</span>, where intricately carved stone mausoleums rest peacefully amidst lush gardens, narrating centuries-old stories.",
+          "<span class='place-name'>Warangal Fort</span>, with remnants of ancient sculptures and grand gateways from the Kakatiya era, transporting you back to medieval Telangana.",
+          "<span class='place-name'>Bhadrakali Temple</span>, nestled beside a serene lake and revered for its divine energy and rich historical association with Kakatiya rulers.",
+          "<span class='place-name'>Thousand Pillar Temple</span> in Hanamkonda, an architectural marvel built in 1163 CE featuring exquisite carvings and remarkable stonework.",
+          "<span class='place-name'>Medak Fort</span>, a historic hilltop fortress dating back to the Kakatiya period with impressive defensive structures and panoramic views.",
+          "<span class='place-name'>Khammam Fort</span>, an ancient citadel built by the Kakatiya rulers showcasing military architecture with its sturdy bastions and walls.",
+          "<span class='place-name'>Bhongir Fort</span>, a distinctive egg-shaped hilltop fortress dating back to the 10th century with unique architectural elements.",
+          "<span class='place-name'>Rachakonda Fort</span>, a medieval fortification nestled in the Eastern Ghats with remnants of royal quarters and temples.",
+          "<span class='place-name'>Elgandal Fort</span> in Karimnagar, a historic site with multiple levels of fortifications and strategic military architecture.",
+          "<span class='place-name'>Kolanupaka Jain Temple</span>, a 2000-year-old shrine renowned for its exquisite marble statues and religious significance.",
+          "<span class='place-name'>Pillalamarri (The Great Banyan Tree)</span>, a 700-year-old banyan tree complex and archaeological site with historic significance.",
+          "<span class='place-name'>Paigah Tombs</span>, intricate limestone mausoleums of the noble Paigah family known for their delicate marble inlay work.",
+          "<span class='place-name'>Domakonda Fort</span> in Kamareddy, a 13th-century structure blending Persian, European and Indian architectural styles."
+        ],
+        "Religious Sites": [
+          "<span class='place-name'>Yadagirigutta Temple</span>, a sacred hill shrine dedicated to Lord Narasimha, known for its tranquil ambiance and spiritual vibe.",
+          "<span class='place-name'>Birla Mandir</span>, made of pure white marble, perched atop a hill overlooking Hussain Sagar Lake and offering a peaceful retreat within the city.",
+          "<span class='place-name'>Ramappa Temple</span>, a UNESCO World Heritage Site admired for its floating bricks, exquisite carvings, and brilliant Kakatiya architecture.",
+          "<span class='place-name'>Keesaragutta Temple</span>, an ancient Shiva temple surrounded by rocky outcrops and scenic views, steeped in mythology and local folklore.",
+          "<span class='place-name'>Chilkur Balaji Temple</span>, known as the 'Visa God' temple, a popular pilgrimage site beside Osman Sagar Lake.",
+          "<span class='place-name'>Makkah Masjid</span>, one of India's oldest and largest mosques built with bricks made from soil brought from Mecca.",
+          "<span class='place-name'>Vemulawada Raja Rajeswara Temple</span>, a significant Shiva shrine and pilgrimage center with historical importance.",
+          "<span class='place-name'>Alampur Jogulamba Temple</span>, one of the 18 Shakti Peethas with distinctive architectural styles from the Badami Chalukya era.",
+          "<span class='place-name'>Gnana Saraswati Temple</span> in Basar, dedicated to the goddess of knowledge where the tradition of Akshara Abhyasam is performed.",
+          "<span class='place-name'>Bhadrachalam Temple</span>, a revered Rama temple on the banks of the Godavari River with significant theological importance.",
+          "<span class='place-name'>Sri Raja Rajeshwara Temple</span> in Vemulawada, a 11th-century temple complex with sacred hot springs and unique rituals.",
+          "<span class='place-name'>Kaleswaram Temple</span>, an ancient Shiva temple at the confluence of sacred rivers Godavari and Pranahita.",
+          "<span class='place-name'>Edupayala Vana Durga Bhavani Temple</span>, a scenic riverside temple complex surrounded by seven streams.",
+          "<span class='place-name'>Sita Ramachandraswamy Temple</span> in Bhadrachalam, an important Vaishnavite shrine with elaborate architecture.",
+          "<span class='place-name'>Peddamma Temple</span> in Jubilee Hills, a significant temple dedicated to the mother goddess with vibrant festivals."
+        ],
+        "Nature & Adventure": [
+          "<span class='place-name'>Nagarjuna Sagar Dam</span>, one of the largest masonry dams in the world, where the gushing water and nearby Buddhist sites promise both thrill and tranquility.",
+          "<span class='place-name'>Kuntala Waterfalls</span>, cascading down from 150 feet amid dense forests, offering a perfect setting for nature lovers and photo enthusiasts.",
+          "<span class='place-name'>Bogatha Waterfalls</span>, often dubbed the 'Niagara of Telangana', hidden in the thick greenery of Mulugu and reachable through scenic forest trails.",
+          "<span class='place-name'>Ananthagiri Hills</span>, blanketed in coffee plantations and forested paths, making it an ideal spot for sunrise treks and picnics.",
+          "<span class='place-name'>Kinnerasani Wildlife Sanctuary</span>, a pristine forest area with diverse flora and fauna around the scenic Kinnerasani reservoir.",
+          "<span class='place-name'>Kawal Tiger Reserve</span>, Telangana's largest wildlife sanctuary offering wildlife safaris through deciduous forests.",
+          "<span class='place-name'>Pakhal Lake</span>, a serene man-made lake surrounded by forest and hills, ideal for boating and picnics.",
+          "<span class='place-name'>Ethipothala Waterfall</span>, a spectacular 70-foot cascade on the Krishna River with a crocodile breeding center nearby.",
+          "<span class='place-name'>Pocharam Wildlife Sanctuary</span>, known for its large deer population and migratory birds around the Pocharam Lake.",
+          "<span class='place-name'>Mallela Theertham Waterfall</span>, a hidden gem in the Nallamala Forest with a natural pool perfect for swimming.",
+          "<span class='place-name'>Somasila</span>, a scenic hillstation with adventure activities like rappelling and rock climbing near Pangal reservoir.",
+          "<span class='place-name'>Laknavaram Lake</span>, a picturesque lake dotted with islands connected by hanging bridges, offering boating and island camping.",
+          "<span class='place-name'>Medaram Forest</span>, home to the Sammakka Saralamma Jatara tribal festival with lush wilderness to explore.",
+          "<span class='place-name'>Amrabad Tiger Reserve</span>, part of the Nallamala forest with exceptional biodiversity and tribal cultural heritage.",
+          "<span class='place-name'>Srisailam Dam</span>, one of India's highest dams offering adventure sports and boating with scenic reservoir views."
+        ],
+        "Urban Attractions": [
+          "<span class='place-name'>Ramoji Film City</span>, the world's largest film studio complex, where you can experience the glitz of cinema sets, fun rides, and themed shows.",
+          "<span class='place-name'>Hussain Sagar Lake</span>, a heart-shaped lake with a giant Buddha statue in its midst and peaceful boat rides that unwind the soul.",
+          "<span class='place-name'>Lumbini Park</span>, a delightful green space along the lakeside with musical fountains, laser shows, and evening crowds soaking in Hyderabad's charm.",
+          "<span class='place-name'>Snow World</span>, a unique indoor snow theme park where you can enjoy snow slides, snowball fights, and a wintry vibe in the middle of the city.",
+          "<span class='place-name'>Salar Jung Museum</span>, housing one of the world's largest one-man collections of antiques and art objects from various civilizations.",
+          "<span class='place-name'>Nizam's Museum</span>, displaying the opulent gifts and possessions of the last Nizam of Hyderabad in his former palace.",
+          "<span class='place-name'>Chowmahalla Palace</span>, the grand seat of the Nizams showcasing stunning architecture and royal artifacts.",
+          "<span class='place-name'>Shilparamam</span>, a crafts village celebrating rural life with handicraft stalls, cultural performances and art exhibitions.",
+          "<span class='place-name'>Tank Bund</span>, a cultural promenade featuring statues of Telugu luminaries along the banks of Hussain Sagar.",
+          "<span class='place-name'>Sudha Cars Museum</span>, a quirky automobile museum with handcrafted cars in unusual designs like cameras, burgers, and more.",
+          "<span class='place-name'>Nehru Centenary Tribal Museum</span>, offering insights into the rich tribal heritage and culture of Telangana.",
+          "<span class='place-name'>Necklace Road</span>, a scenic lakeside boulevard with parks, eateries and recreational spots perfect for evening walks.",
+          "<span class='place-name'>B.M. Birla Science Museum and Planetarium</span>, an interactive science center with a dinosaurium and space exhibits.",
+          "<span class='place-name'>Public Gardens (Bagh-e-Aam)</span>, a historic urban park housing the State Legislative Assembly and other heritage buildings.",
+          "<span class='place-name'>Ravindra Bharathi</span>, a cultural center hosting classical performances, theater and musical events."
+        ],
+        "Wildlife & Parks": [
+          "<span class='place-name'>Nehru Zoological Park</span>, a sprawling space housing hundreds of animal species and safari zones that make it a hit among families and kids.",
+          "<span class='place-name'>Mrugavani National Park</span>, a compact but rich sanctuary with trails, deer sightings, and a tranquil atmosphere just outside the city.",
+          "<span class='place-name'>KBR National Park</span>, a green lung in Jubilee Hills that's ideal for morning walks and birdwatching amidst urban Hyderabad.",
+          "<span class='place-name'>Mahavir Harina Vanasthali</span>, a peaceful deer park once the hunting grounds of the Nizams, now a serene haven for wildlife lovers.",
+          "<span class='place-name'>Manjeera Wildlife Sanctuary</span>, a protected area around the Manjeera reservoir known for its aquatic birds and marsh crocodiles.",
+          "<span class='place-name'>Eturnagaram Wildlife Sanctuary</span>, one of the oldest sanctuaries in Telangana with dense deciduous forests and tribal communities.",
+          "<span class='place-name'>Pranahita Wildlife Sanctuary</span>, a lush forest area along the Pranahita River with diverse wildlife and scenic landscapes.",
+          "<span class='place-name'>Kasu Brahmananda Reddy National Park</span>, an urban forest park in Jubilee Hills with a rich variety of flora and fauna.",
+          "<span class='place-name'>Shamirpet Deer Park</span>, a small but charming park where visitors can observe spotted deer in a natural setting.",
+          "<span class='place-name'>Alisagar Deer Park</span>, a scenic wildlife area surrounding a historic reservoir with a population of spotted deer.",
+          "<span class='place-name'>Butterfly Park</span> in Hyderabad, showcasing colorful butterfly species in a greenhouse environment with educational displays.",
+          "<span class='place-name'>Srisailam Wildlife Sanctuary</span>, part of the Nagarjunasagar-Srisailam Tiger Reserve with diverse wildlife and scenic landscapes.",
+          "<span class='place-name'>Pakhal Wildlife Sanctuary</span>, surrounding the historic Pakhal Lake with opportunities for wildlife viewing and nature walks.",
+          "<span class='place-name'>Kamalapur Forest</span>, a lesser-known woodland area near Warangal with hiking trails and birdwatching opportunities.",
+          "<span class='place-name'>Osmansagar and Himayatsagar Lakes</span>, two reservoirs with surrounding protected areas serving as important bird habitats."
+        ]
+      };
+  
+      if (!plan.duration) {
+        const startDate = new Date(plan.startDate);
+        const endDate = new Date(plan.endDate);
+        plan.duration = Math.ceil((endDate - startDate) / (1000 * 3600 * 24));
+      }
+  
+      const itineraryDiv = document.createElement("div");
+      itineraryDiv.innerHTML = `<h2>Your Perfect Telangana Adventure</h2>`;
+  
+      const summaryParagraph = document.createElement("p");
+      summaryParagraph.style.lineHeight = "1.6";
+      summaryParagraph.style.fontSize = "18px";
+      summaryParagraph.style.marginBottom = "25px";
+  
+      const highlights = [];
+      plan.interests.forEach(interest => {
+        const options = destinations[interest] || ["a hidden treasure in Telangana"];
+        const sample = options[Math.floor(Math.random() * options.length)];
+        // Extract just the place name for the highlights
+        const placeName = sample.match(/<span class='place-name'>(.*?)<\/span>/)[1];
+        highlights.push(`${interest.toLowerCase()} experiences such as visiting ${placeName}`);
+      });
+  
+      let intro = `This ${plan.duration}-day journey through Telangana invites you to uncover a unique blend of heritage, nature, and culture. `;
+      if (highlights.length === 1) {
+        intro += `Expect memorable ${highlights[0]}`;
+      } else if (highlights.length === 2) {
+        intro += `Expect memorable ${highlights[0]} and ${highlights[1]}`;
+      } else {
+        const last = highlights.pop();
+        intro += `Expect memorable ${highlights.join(', ')}, and ${last}`;
+      }
+      intro += `. Every stop is handpicked to reflect your ${plan.travelType.toLowerCase()} vibe, all while keeping it comfortable within your budget of ₹${plan.budget}.`;
+  
+      summaryParagraph.textContent = intro;
+      itineraryDiv.appendChild(summaryParagraph);
+  
+      const dayByDayHeading = document.createElement("h3");
+      dayByDayHeading.textContent = "Your Day-by-Day Adventure";
+      dayByDayHeading.style.color = "#0077b6";
+      dayByDayHeading.style.marginTop = "30px";
+      itineraryDiv.appendChild(dayByDayHeading);
+  
+      const dayByDayParagraph = document.createElement("div");
+      dayByDayParagraph.style.lineHeight = "1.6";
+      dayByDayParagraph.style.fontSize = "17px";
+  
+      for (let day = 1; day <= plan.duration; day++) {
+        const interest = plan.interests[(day - 1) % plan.interests.length];
+        const options = destinations[interest] || ["a memorable local spot"];
+        const activity = options[(day - 1) % options.length];
+  
+        const dayDiv = document.createElement("div");
+        dayDiv.className = "detail";
+        dayDiv.innerHTML = `<strong>Day ${day}:</strong> ${activity}`;
+        dayByDayParagraph.appendChild(dayDiv);
+      }
+  
+      itineraryDiv.appendChild(dayByDayParagraph);
+      document.querySelector("section").appendChild(itineraryDiv);
+    } else {
+      document.querySelector("section").innerHTML +=
+        "<p style='color: red;'>No plan found. Please go back and fill the form.</p>";
+    }
+  });
+</script>
+<footer style="text-align: center; padding: 20px;">
+  <p>© 2025 Telangana Explorer. Crafted with ❤️ for your perfect getaway.</p>
+</footer>
+</body>
+</html>
