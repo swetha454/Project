@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Kerala Trip Summary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2faff;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #2a91ec, #08b6bf);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    .detail {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+
+    .detail strong {
+      color: #045d75;
+    }
+    
+    .place-name {
+      font-weight: bold;
+      color: #045d75;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your Kerala Trip Itinerary</h1>
+  <p>Here is your customized travel plan</p>
+</header>
+
+<section>
+  <h2>Trip Summary</h2>
+  <div class="detail"><strong>Start Date:</strong> <span id="startDate"></span></div>
+  <div class="detail"><strong>End Date:</strong> <span id="endDate"></span></div>
+  <div class="detail"><strong>Number of Travelers:</strong> <span id="travelers"></span></div>
+  <div class="detail"><strong>Budget:</strong> <span id="budget"></span></div>
+  <div class="detail"><strong>Travel Type:</strong> <span id="travelType"></span></div>
+  <div class="detail"><strong>Interests:</strong> <span id="interests"></span></div>
+  <section>
+    <h2>Map of Kerala</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126872.16892864591!2d76.2668202!3d9.9312328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b08730c543eaf0b%3A0xa300c71548cb4074!2sKerala!5e0!3m2!1sen!2sin!4v1617890118164!5m2!1sen!2sin"
+      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const plan = JSON.parse(localStorage.getItem("keralaPlan"));
+  
+    if (plan) {
+      document.getElementById("startDate").textContent = plan.startDate;
+      document.getElementById("endDate").textContent = plan.endDate;
+      document.getElementById("travelers").textContent = plan.travelers;
+      document.getElementById("budget").textContent = `₹${plan.budget}`;
+      document.getElementById("travelType").textContent = plan.travelType;
+      document.getElementById("interests").textContent = plan.interests.join(", ");
+  
+      const destinations = {
+        "Beaches": [
+          "<span class='place-name'>Kovalam Beach</span> – Famous for its crescent-shaped coastline, golden sands, and iconic lighthouse, this beach is perfect for both sunbathing and indulging in thrilling water sports.",
+          "<span class='place-name'>Varkala Beach</span> – Perched beneath red laterite cliffs, this serene beach offers breathtaking sunset views and a spiritual atmosphere near ancient temples.",
+          "<span class='place-name'>Marari Beach</span> – A peaceful and less-crowded coastal retreat with swaying coconut palms and pristine waters, ideal for relaxation.",
+          "<span class='place-name'>Cherai Beach</span> – Located near Kochi, this beach blends sea and backwater beauty, and is known for dolphin sightings.",
+          "<span class='place-name'>Bekal Fort Beach</span> – A scenic shore near the majestic Bekal Fort, where waves crash against the ancient ramparts for a cinematic experience.",
+          "<span class='place-name'>Payyambalam Beach</span> – A pristine stretch of golden sand in Kannur with beautiful landscaped gardens and sunset views.",
+          "<span class='place-name'>Kappad Beach</span> – The historic landing site of Vasco da Gama in 1498, offering a perfect blend of history and natural beauty.",
+          "<span class='place-name'>Thottada Beach</span> – A hidden gem in North Kerala with untouched shores, perfect for those seeking solitude.",
+          "<span class='place-name'>Dharmadam Beach</span> – A tranquil beach with a small island that can be reached by foot during low tide.",
+          "<span class='place-name'>Papanasham Beach</span> – Also known as Varkala Beach, considered sacred for ritual purification with natural springs."
+        ],
+        "Wildlife": [
+          "<span class='place-name'>Periyar Wildlife Sanctuary</span> – Explore the lush jungle around a scenic lake and go on a boat safari to see elephants, bison, and colorful birds in their natural habitat.",
+          "<span class='place-name'>Wayanad Wildlife Sanctuary</span> – A tranquil forest reserve nestled in the Western Ghats, home to tigers, leopards, elephants, and more.",
+          "<span class='place-name'>Eravikulam National Park</span> – Trek to the Anamudi peak and witness the blooming Neelakurinji flowers (once in 12 years), along with rare Nilgiri Tahrs.",
+          "<span class='place-name'>Silent Valley National Park</span> – An untouched rainforest sanctuary perfect for nature lovers and eco-tourists, rich in biodiversity and legend.",
+          "<span class='place-name'>Parambikulam Tiger Reserve</span> – Experience the wilderness through bamboo rafting, trekking, and night safaris in this eco-tourism destination.",
+          "<span class='place-name'>Mangalavanam Bird Sanctuary</span> – A green oasis in the heart of Kochi city, known for its mangroves and migratory birds.",
+          "<span class='place-name'>Thattekkad Bird Sanctuary</span> – Kerala's first bird sanctuary, described by ornithologist Dr. Salim Ali as the 'richest bird habitat in India'.",
+          "<span class='place-name'>Chinnar Wildlife Sanctuary</span> – A unique dry deciduous forest with rare grizzled giant squirrels, spotted deer, and over 200 bird species.",
+          "<span class='place-name'>Aralam Wildlife Sanctuary</span> – Located in Kannur district with diverse flora and fauna, including the endangered lion-tailed macaque.",
+          "<span class='place-name'>Neyyar Wildlife Sanctuary</span> – Home to crocodiles, lion-tailed macaques, and a crocodile rehabilitation center near Thiruvananthapuram."
+        ],
+        "Tea Plantations": [
+          "<span class='place-name'>Munnar Tea Gardens</span> – Stroll through emerald-green plantations and misty hills in Munnar, where the aroma of fresh tea fills the air.",
+          "<span class='place-name'>Kolukkumalai Tea Estate</span> – The world's highest tea estate, offering panoramic views and hand-crafted tea straight from the source.",
+          "<span class='place-name'>Poopara Plantations</span> – Explore lesser-known estates near Munnar, where you can see cardamom and tea cultivated together.",
+          "<span class='place-name'>Lockhart Tea Factory</span> – Learn about traditional tea processing and sample different varieties while surrounded by mountains.",
+          "<span class='place-name'>Devikulam Tea Plantation</span> – A serene plantation with colonial legacy and mist-covered hills near the Sita Devi Lake.",
+          "<span class='place-name'>Peermedu Tea Gardens</span> – Historical plantations established by the British with charming colonial bungalows in Idukki district.",
+          "<span class='place-name'>Vagamon Tea Estates</span> – Rolling hills and tea plantations in Vagamon offering paragliding opportunities over the lush landscapes.",
+          "<span class='place-name'>Chithirapuram Tea Gardens</span> – A picturesque plantation area with colonial-era bungalows and the aroma of fresh tea leaves.",
+          "<span class='place-name'>Pallivasal Tea Plantations</span> – One of the oldest tea estates in Munnar with scenic viewpoints overlooking the valley.",
+          "<span class='place-name'>Mattupetty Tea Plantations</span> – Tea gardens adjacent to the beautiful Mattupetty Dam and lake, perfect for photography."
+        ],
+        "Culture & Heritage": [
+          "<span class='place-name'>Fort Kochi</span> – Wander through colonial-era streets filled with Dutch, Portuguese, and British history alongside charming cafes and art galleries.",
+          "<span class='place-name'>Mattancherry Palace</span> – Visit this Portuguese-built palace with stunning Kerala murals and royal exhibits from the Cochin dynasty.",
+          "<span class='place-name'>Jew Town, Kochi</span> – Walk the quaint lanes of this historic Jewish settlement, home to antique shops and the Paradesi Synagogue.",
+          "<span class='place-name'>Thrissur Pooram Festival</span> – If your trip overlaps, witness Kerala's grandest temple festival with elephants, fireworks, and chenda melam drums.",
+          "<span class='place-name'>Padmanabhapuram Palace</span> – The largest wooden palace in Asia, showcasing traditional Kerala architecture at its finest.",
+          "<span class='place-name'>Edakkal Caves</span> – Ancient rock engravings dating back to 6000 BCE, showing evidence of prehistoric civilization in Wayanad.",
+          "<span class='place-name'>Bekal Fort</span> – Kerala's largest fort offering panoramic views of the Arabian Sea from its observation towers.",
+          "<span class='place-name'>Kuthira Malika Palace</span> – An architectural marvel with 122 wooden horses carved into the roof in Thiruvananthapuram.",
+          "<span class='place-name'>St. Francis Church</span> – The oldest European church in India, where Vasco da Gama was originally buried in Fort Kochi.",
+          "<span class='place-name'>Kerala Kalamandalam</span> – The premier institution for classical performing arts, where you can witness Kathakali and Mohiniyattam training.",
+          "<span class='place-name'>Cheena Vala (Chinese Fishing Nets)</span> – The iconic cantilevered fishing nets that line the shores of Fort Kochi, introduced by Chinese traders.",
+          "<span class='place-name'>Paliam Palace</span> – A historical palace that housed the Prime Ministers of Kochi kingdom with classic Kerala architecture."
+        ],
+        "Relaxation": [
+          "<span class='place-name'>Alleppey Houseboat Stay</span> – Cruise through the serene backwaters of Alleppey in a traditional houseboat while enjoying fresh Kerala cuisine.",
+          "<span class='place-name'>Ayurvedic Spa Retreat</span> – Rejuvenate your senses with ancient healing massages and therapies in tranquil green surroundings.",
+          "<span class='place-name'>Kumarakom Backwaters</span> – Enjoy a slower pace of life in this quiet village along the Vembanad Lake, ideal for bird watching and canoeing.",
+          "<span class='place-name'>Poovar Island</span> – Reach this secluded island by boat and soak in the beauty where the backwaters meet the sea.",
+          "<span class='place-name'>Mararikulam</span> – Experience authentic village life in this coastal hamlet with pristine beaches and traditional fisher folk culture.",
+          "<span class='place-name'>Vembanad Lake</span> – Kerala's largest lake offering peaceful cruise experiences and stunning sunset views.",
+          "<span class='place-name'>Thekkady Lake</span> – Take a bamboo raft through mist-covered waters and spot wildlife along the shores.",
+          "<span class='place-name'>Vagamon</span> – A hill station with meadows, pine forests, and tea plantations away from tourist crowds.",
+          "<span class='place-name'>Devikulam Lake</span> – A serene mountain lake with therapeutic waters named after the goddess Sita.",
+          "<span class='place-name'>Athirappilly Waterfalls</span> – Known as the 'Niagara of India,' these falls offer a mesmerizing spectacle amidst lush forests."
+        ],
+        "Hill Stations": [
+          "<span class='place-name'>Munnar</span> – A paradise of rolling hills, tea plantations, and misty valleys in the Western Ghats.",
+          "<span class='place-name'>Wayanad</span> – A green highland retreat with ancient caves, waterfalls, and spice plantations.",
+          "<span class='place-name'>Ponmudi</span> – The 'Golden Peak' offering trekking trails through cloud-covered mountains near Thiruvananthapuram.",
+          "<span class='place-name'>Idukki</span> – Home to the famous arch dam and stunning landscapes with wildlife sanctuaries.",
+          "<span class='place-name'>Nelliyampathy</span> – Known as 'Poor Man's Ooty' with orange farms, coffee plantations, and viewpoints.",
+          "<span class='place-name'>Peermedu</span> – A colonial hill station with cardamom hills and old bungalows in the Idukki district.",
+          "<span class='place-name'>Vagamon</span> – An untouched hill station with meadows, pine forests, and pristine valleys.",
+          "<span class='place-name'>Kuttikanam</span> – A plantation town with trekking trails and misty mountains in Idukki.",
+          "<span class='place-name'>Ranipuram</span> – Known as 'Ooty of Kerala' in Kasaragod district with shola forests and grasslands."
+        ],
+        "Waterfalls": [
+          "<span class='place-name'>Athirappilly Waterfalls</span> – Kerala's largest waterfall, dramatically cascading from 80 feet high through thick forests.",
+          "<span class='place-name'>Vazhachal Waterfalls</span> – Located near Athirappilly, offering serene forest views and butterfly gardens.",
+          "<span class='place-name'>Thusharagiri Waterfalls</span> – 'The snowcapped mountain' with three magnificent cascades perfect for trekking.",
+          "<span class='place-name'>Soochipara Waterfalls</span> – A three-tiered fall in Wayanad, ideal for cliff jumping and swimming.",
+          "<span class='place-name'>Meenmutty Waterfalls</span> – The largest waterfall in Wayanad, requiring a challenging trek through forest paths.",
+          "<span class='place-name'>Palaruvi Waterfalls</span> – 'Stream of Milk' offering medicinal bathing waters in Kollam district.",
+          "<span class='place-name'>Kilimanoor Waterfalls</span> – A hidden gem with pristine waters surrounded by rubber plantations.",
+          "<span class='place-name'>Aruvikkuzhi Waterfalls</span> – A peaceful cascade near Kumarakom with rich butterfly population.",
+          "<span class='place-name'>Chethalayam Waterfalls</span> – A seasonal waterfall in Wayanad famous for bird watching."
+        ],
+        "Pilgrim Sites": [
+          "<span class='place-name'>Sabarimala Temple</span> – One of India's largest annual pilgrimages dedicated to Lord Ayyappa in the Western Ghats.",
+          "<span class='place-name'>Padmanabhaswamy Temple</span> – An architectural marvel with incredible wealth and Dravidian architecture in Thiruvananthapuram.",
+          "<span class='place-name'>Guruvayur Temple</span> – One of the most sacred Krishna temples in India with daily elephant processions.",
+          "<span class='place-name'>Ettumanoor Mahadeva Temple</span> – Famous for ancient wall paintings and bronze sculptures in Kottayam.",
+          "<span class='place-name'>Paradesi Synagogue</span> – The oldest active synagogue in the Commonwealth built in 1568 in Fort Kochi.",
+          "<span class='place-name'>St. Francis Church</span> – The first European church in India built in 1503 in Fort Kochi.",
+          "<span class='place-name'>Cheraman Juma Masjid</span> – Believed to be the first mosque in India, built during the lifetime of Prophet Muhammad.",
+          "<span class='place-name'>Malayattoor Church</span> – An important Christian pilgrimage center built by St. Thomas on Malayattoor hill.",
+          "<span class='place-name'>Attukal Bhagavathy Temple</span> – Home to the largest women's festival (Pongala) recorded in Guinness Book.",
+          "<span class='place-name'>Vadakkunnathan Temple</span> – A Shiva temple with exceptional Kerala architecture in Thrissur."
+        ]
+      };
+  
+      if (!plan.duration) {
+        const startDate = new Date(plan.startDate);
+        const endDate = new Date(plan.endDate);
+        const timeDiff = endDate.getTime() - startDate.getTime();
+        plan.duration = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      }
+  
+      const itineraryDiv = document.createElement("div");
+      itineraryDiv.innerHTML = `<h2>Your Perfect Kerala Adventure</h2>`;
+  
+      const summaryParagraph = document.createElement("p");
+      summaryParagraph.style.lineHeight = "1.6";
+      summaryParagraph.style.fontSize = "18px";
+      summaryParagraph.style.marginBottom = "25px";
+  
+      let itinerarySummary = `Get ready for a ${plan.duration}-day soul-soothing escape to Kerala, God's Own Country, where rolling tea hills meet golden beaches and ancient temples stand beside tranquil backwaters. This hand-crafted journey includes enriching ${plan.interests.join(", ").toLowerCase()} experiences like watching sunsets in Varkala, spotting elephants in Periyar, and sipping fresh tea in Munnar. With a perfect blend of exploration and relaxation tailored to your ${plan.travelType.toLowerCase()} travel style, all within a budget of ₹${plan.budget}, this trip promises to be unforgettable.`;
+  
+      summaryParagraph.textContent = itinerarySummary;
+      itineraryDiv.appendChild(summaryParagraph);
+  
+      const dayByDayHeading = document.createElement("h3");
+      dayByDayHeading.textContent = "Your Day-by-Day Adventure";
+      dayByDayHeading.style.color = "#0077b6";
+      dayByDayHeading.style.marginTop = "30px";
+      itineraryDiv.appendChild(dayByDayHeading);
+  
+      const dayByDayParagraph = document.createElement("div");
+      dayByDayParagraph.style.lineHeight = "1.6";
+      dayByDayParagraph.style.fontSize = "17px";
+  
+      for (let day = 1; day <= plan.duration; day++) {
+        const interest = plan.interests[(day - 1) % plan.interests.length];
+        const options = destinations[interest] || ["Explore hidden gems and local secrets of Kerala."];
+        const activityDescription = options[(day - 1) % options.length];
+  
+        const dayDiv = document.createElement("div");
+        dayDiv.className = "detail";
+        dayDiv.innerHTML = `<strong>Day ${day}:</strong> ${activityDescription}`;
+        dayByDayParagraph.appendChild(dayDiv);
+      }
+  
+      itineraryDiv.appendChild(dayByDayParagraph);
+      document.querySelector("section").appendChild(itineraryDiv);
+    } else {
+      document.querySelector("section").innerHTML +=
+        "<p style='color: red;'>No plan found. Please go back and fill the form.</p>";
+    }
+  });
+  </script>
+  <footer style="text-align: center; padding: 20px;">
+    <p>© 2025 Kerala Explorer. Crafted with ❤️ for your perfect getaway.</p>
+  </footer>
+</body>
+</html>
