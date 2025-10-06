@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Andhra Pradesh Trip Summary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2faff;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #2a91ec, #08b6bf);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    .detail {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+
+    .detail strong {
+      color: #045d75;
+    }
+    .place-name {
+      font-weight: bold;
+      color: #045d75;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your Andhra Pradesh Trip Itinerary</h1>
+  <p>Here is your customized travel plan</p>
+</header>
+
+<section>
+  <h2>Trip Summary</h2>
+  <div class="detail"><strong>Start Date:</strong> <span id="startDate"></span></div>
+  <div class="detail"><strong>End Date:</strong> <span id="endDate"></span></div>
+  <div class="detail"><strong>Number of Travelers:</strong> <span id="travelers"></span></div>
+  <div class="detail"><strong>Budget:</strong> <span id="budget"></span></div>
+  <div class="detail"><strong>Travel Type:</strong> <span id="travelType"></span></div>
+  <div class="detail"><strong>Interests:</strong> <span id="interests"></span></div>
+  <section>
+    <h2>Map of Andhra Pradesh</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930541.2045374136!2d78.5102782!3d15.9123765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb92f46cfdfb6c3%3A0xf0b88d20ec46f7df!2sAndhra%20Pradesh!5e0!3m2!1sen!2sin!4v1713452012012!5m2!1sen!2sin" 
+      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+  
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const plan = JSON.parse(localStorage.getItem("andhrapradeshPlan"));
+  
+    if (plan) {
+      const { startDate, endDate, travelers, budget, travelType, interests } = plan;
+  
+      document.getElementById("startDate").textContent = startDate;
+      document.getElementById("endDate").textContent = endDate;
+      document.getElementById("travelers").textContent = travelers;
+      document.getElementById("budget").textContent = `₹${budget}`;
+      document.getElementById("travelType").textContent = travelType;
+      document.getElementById("interests").textContent = interests.join(", ");
+  
+      if (!plan.duration) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        plan.duration = Math.ceil((end - start) / (1000 * 3600 * 24));
+      }
+  
+      const destinations = {
+        "Temples & Pilgrimage": [
+          "<span class='place-name'>Tirupati Balaji Temple</span> - One of the most revered pilgrimage spots in India, known for its spiritual energy and magnificent Dravidian architecture.",
+          "<span class='place-name'>Srisailam Mallikarjuna Temple</span> - Nestled in the Nallamala Hills, this temple is one of the 12 Jyotirlingas and offers a deeply spiritual vibe.",
+          "<span class='place-name'>Simhachalam Temple</span> - A beautiful hilltop shrine blending Chalukya and Orissan architecture styles.",
+          "<span class='place-name'>Kanaka Durga Temple, Vijayawada </span>- A powerful Shakti Peetha located on Indrakeeladri Hill, overlooking the Krishna River.",
+          "<span class='place-name'>Sri Kalahasti Temple</span> - Famous for Vayu Lingam, representing air among the Panchabhuta Sthalams.",
+          "<span class='place-name'>Annavaram Temple</span> - Dedicated to Lord Satyanarayana, this temple is popular for performing special pujas and rituals.",
+          "<span class='place-name'>Mangalagiri Temple</span> - Known for its unique feature of Lord Narasimha accepting panakam (jaggery water) offered by devotees.",
+          "<span class='place-name'>Ahobilam</span> - A set of nine temples spread across the forested hills, dedicated to different forms of Lord Narasimha.",
+          "<span class='place-name'>Penugonda Temple</span> - Believed to be the birthplace of Goddess Lakshmi, this is a tranquil and historic temple site.",
+          "<span class='place-name'>Srikalahasteeswara Temple</span> - A magnificent temple dedicated to Lord Shiva with impressive Dravidian architecture and mythology.",
+          "<span class='place-name'>Puttaparthi Sathya Sai Baba Ashram</span> - A spiritual center drawing visitors from around the world for meditation and service.",
+          "<span class='place-name'>ISKCON Temple Anantapur</span> - A serene Krishna temple known for its beautiful paintings and peaceful atmosphere.",
+          "<span class='place-name'>Venkateswara Temple, Dwaraka Tirumala</span> - Known as 'Chinna Tirupati' with similar religious significance to Tirupati.",
+          "<span class='place-name'>Padmavathi Temple, Tiruchanur</span> - The abode of Goddess Padmavathi, consort of Lord Venkateswara.",
+          "<span class='place-name'>Sri Varasiddhi Vinayaka Temple, Kanipakam</span> - Known for its self-growing idol of Lord Ganesha immersed in water.",
+          "<span class='place-name'>Yaganti Temple</span> - Famous for its naturally growing Nandi idol and surrounded by stunning rock formations.",
+          "<span class='place-name'>Panakala Lakshmi Narasimha Swamy Temple, Mangalagiri</span> - A unique temple where Lord Narasimha is offered only jaggery water.",
+          "<span class='place-name'>Mahanandi Temple</span> - One of the Nava Nandi temples with a natural spring that feeds its sacred tank.",
+          "<span class='place-name'>Draksharamam Sri Bhimeswara Swamy Temple</span> - One of the Pancharama temples with a rare east-facing Shiva idol.",
+          "<span class='place-name'>Arasavalli Sun Temple</span> - One of the few temples in India dedicated to Surya (Sun God) with stunning architectural elements."
+        ],
+        "Nature & Hills": [
+          "<span class='place-name'>Araku Valley</span> - A picturesque hill station with coffee plantations, tribal culture, and lush green valleys.",
+          "<span class='place-name'>Borra Caves</span> - Majestic limestone caves with fascinating stalactite and stalagmite formations millions of years old.",
+          "<span class='place-name'>Horsley Hills</span> - A cool retreat with eucalyptus groves, viewpoints, and serene trails perfect for a quiet escape.",
+          "<span class='place-name'>Maredumilli Forest</span> - A biodiverse jungle ideal for eco-tourism, known for its waterfalls and tribal hospitality.",
+          "<span class='place-name'>Lambasingi (Andhra's Kashmir)</span> - The only place in Andhra Pradesh that sees snowfall, with misty mornings and peaceful vibes.",
+          "<span class='place-name'>Talakona Waterfalls</span> - The highest waterfall in the state located inside a wildlife sanctuary.",
+          "<span class='place-name'>Nagalapuram Hills</span> - A trekking destination with forest paths, hidden pools, and refreshing waterfalls.",
+          "<span class='place-name'>Gandikota (Grand Canyon of India)</span> - A spectacular gorge carved by the Pennar River with magnificent rock formations.",
+          "<span class='place-name'>Pulicat Lake</span> - The second largest brackish water lagoon in India, famous for flamingos and migratory birds.",
+          "<span class='place-name'>Papikondalu</span> - Breathtaking hills along the Godavari River offering boat rides through scenic gorges.",
+          "<span class='place-name'>Nallamala Forest</span> - One of the largest stretches of uninterrupted forest in South India with rich biodiversity.",
+          "<span class='place-name'>Ananthagiri Hills</span> - Known for coffee plantations, ancient caves, and the origin point of the Musi River.",
+          "<span class='place-name'>Kambakam Waterfalls</span> - A hidden gem with multi-tiered falls surrounded by dense forest.",
+          "<span class='place-name'>Paderu Hills</span> - A tribal area with rolling hills, valleys, and authentic cultural experiences.",
+          "<span class='place-name'>Papi Hills</span>- A range of hills along the Godavari River with boat cruises through scenic gorges.",
+          "<span class='place-name'>Ettipotala Waterfalls</span> - A majestic waterfall on the Krishna River with panoramic views of surrounding valleys.",
+          "<span class='place-name'>Katiki Waterfalls</span> - A spectacular cascade in the Eastern Ghats near Araku Valley.",
+          "<span class='place-name'>Kailasagiri Hills</span> - A hill park with panoramic views of Visakhapatnam city and the Bay of Bengal.",
+          "<span class='place-name'>Kondapalli Reserve Forest</span> - A biodiverse forest famous for local wooden toy craftsmanship.",
+          "<span class='place-name'>Vanjangi Hills (Andhra's Meghalaya)</span> - Known for stunning sunrise views above clouds and misty landscapes."
+        ],
+        "Beaches & Coastal": [
+          "<span class='place-name'>RK Beach (Vizag)</span> - A lively urban beach with golden sands, food stalls, and a vibrant promenade.",
+          "<span class='place-name'>Bheemili Beach</span> - A quiet and scenic beach with a colonial-era lighthouse and picturesque views.",
+          "<span class='place-name'>Yarada Beach</span> - Surrounded by hills on three sides, this secluded beach offers tranquility and natural charm.",
+          "<span class='place-name'>Manginapudi Beach</span> - Known for its black soil and scenic sunsets, near Machilipatnam.",
+          "<span class='place-name'>Suryalanka Beach</span> - A beautiful beach near Bapatla, perfect for a relaxed family outing or beachside stay.",
+          "<span class='place-name'>Vodarevu Beach</span> - A less-crowded beach near Chirala, loved for its calm waters and palm groves.",
+          "<span class='place-name'>Kakinada Beach</span> - A flat and safe beach with family-friendly atmosphere and nearby Coringa mangrove forests.",
+          "<span class='place-name'>Perupalem Beach</span> - A relatively untouched gem near West Godavari, ideal for peaceful evening strolls.",
+          "<span class='place-name'>Mypadu Beach</span> - A serene beach with white sand and blue waters in Nellore district.",
+          "<span class='place-name'>Rushikonda Beach</span> - A pristine beach with water sports facilities and golden sands north of Visakhapatnam.",
+          "<span class='place-name'>Lawson's Bay Beach</span> - A quiet alternative to RK Beach with clear waters and fewer crowds.",
+          "<span class='place-name'>Rama Krishna Beach</span> - A vibrant urban beach with parks, street food, and entertainment options.",
+          "<span class='place-name'>Baruva Beach</span> - A secluded beach in Srikakulam district known for its unspoiled natural beauty.",
+          "<span class='place-name'>Ramakrishna Beach</span> - A popular beach in Visakhapatnam with parks, memorials and eateries along the shore.",
+          "<span class='place-name'>Kalingapatnam Beach</span> - A historic beach with an old lighthouse and colonial influences.",
+          "<span class='place-name'>Uppada Beach</span> - Famous for its handloom textiles and fishing community culture.",
+          "<span class='place-name'>Coringa Mangrove Forest</span> - India's second largest mangrove forest with unique bird species and boat tours.",
+          "<span class='place-name'>Madugula Beach</span> - A hidden gem with minimal tourist infrastructure and untouched natural beauty.",
+          "<span class='place-name'>Sagar Nagar Beach</span> - A relatively quiet beach area with residential developments and scenic views.",
+          "<span class='place-name'>Kothapatnam Beach</span> - A beach known for its long shoreline and traditional fishing activities."
+        ],
+        "Historical & Culture": [
+          "<span class='place-name'>Golkonda Fort</span> - A grand fort known for its acoustic architecture, royal history, and panoramic views.",
+          "<span class='place-name'>Lepakshi Temple</span> - Famed for its hanging pillar and detailed carvings showcasing Vijayanagara artistry.",
+          "<span class='place-name'>Amaravati Stupa</span> - An ancient Buddhist site with intricate stone reliefs dating back over 2000 years.",
+          "<span class='place-name'>Undavalli Caves</span> - Impressive rock-cut caves showcasing Gupta-style architecture and large Vishnu sculpture.",
+          "<span class='place-name'>Kondapalli Fort</span> - A hilltop fort with centuries of history, offering a panoramic view and local wooden toys.",
+          "<span class='place-name'>Chandragiri Fort</span> - A fort near Tirupati that once served as the capital of the Vijayanagara Empire.",
+          "<span class='place-name'>Belum Caves</span> - The second longest caves in India, known for underground passages and fresh water spring.",
+          "<span class='place-name'>Rajahmundry River Cruise</span> - Enjoy a scenic cruise over the Godavari River with cultural performances.",
+          "<span class='place-name'>Bobbili Fort</span> - A historic fort with a tragic past and beautiful gardens in Vizianagaram district.",
+          "<span class='place-name'>Vontimitta Temple</span> - A stunning 16th-century temple associated with Ramayana and Vijayanagara architecture.",
+          "<span class='place-name'>Gandikota Fort</span> - A 12th-century fort built on a gorge, known as India's own Grand Canyon.",
+          "<span class='place-name'>Dutch Cemetery, Masulipatnam</span> - A remnant of colonial history with fascinating tombstones and architecture.",
+          "<span class='place-name'>Nagarjunakonda</span> - An island museum with rescued artifacts from a once-thriving Buddhist civilization.",
+          "<span class='place-name'>Bavikonda Buddhist Complex</span> - Ancient monastery ruins dating back to the 3rd century BCE.",
+          "<span class='place-name'>Thotlakonda</span> - A 2000-year-old Buddhist complex with stupas, viharas, and chaityas on a hill.",
+          "<span class='place-name'>Etikoppaka Toy Village</span> - Famous for lacquer-coated wooden toys made using traditional techniques.",
+          "<span class='place-name'>Dindi Boat Ride</span> - Experience the backwaters of Godavari with traditional boat houses and local cuisine.",
+          "<span class='place-name'>Addanki Ancient Jain Temple</span> - A historical Jain site with significant archaeological importance.",
+          "<span class='place-name'>Penukonda Fort</span> - A massive fortress with interesting blend of Hindu and Islamic architectural styles.",
+          "<span class='place-name'>Mogalrajapuram Caves</span> - Ancient rock-cut temples with intricate carvings dating to the 5th century."
+        ],
+        "Urban Attractions": [
+          "<span class='place-name'>Vizag Submarine Museum</span> - Housed inside a real submarine, it's a fascinating look into naval history.",
+          "<span class='place-name'>Kailasagiri Hilltop Park</span></span> - A panoramic hill park with ropeway rides, huge statues, and ocean views.",
+          "<span class='place-name'>Indira Gandhi Zoological Park</span> - A large zoo surrounded by hills, home to tigers, elephants, and more.",
+          "<span class='place-name'>Vijayawada Prakasam Barrage</span> - A beautiful riverside landmark connecting Krishna and Guntur districts.",
+          "<span class='place-name'>City of Destiny - Vizag Shopping</span> - Enjoy local street markets, handicrafts, and seafood delights.",
+          "<span class='place-name'>Tirupati Zoo</span> - A family-friendly destination with a wide range of animals and a serene environment.",
+          "<span class='place-name'>Vizag Aircraft Museum</span> - Featuring actual decommissioned aircraft with tours of the interiors.",
+          "<span class='place-name'>Visakhapatnam Musical Fountain</span> - An evening entertainment spot with synchronizing water and light shows.",
+          "<span class='place-name'>NTR Gardens</span> - An urban recreational park in Hyderabad with boating, eating, and relaxation options.",
+          "<span class='place-name'>Victoria Jubilee Museum</span> - A colonial-era museum showcasing archaeological and historical artifacts.",
+          "<span class='place-name'>VMRDA Central Park</span> - A large urban park in Vizag with walking paths, playgrounds, and landscaped gardens.",
+          "<span class='place-name'>MGM Amaravati</span> - A snow-themed amusement park with rides and entertainment for all ages.",
+          "<span class='place-name'>Dr. YSR Museum </span>- Dedicated to the former Chief Minister with interactive exhibits about his life.",
+          "<span class='place-name'>Sivisi Submarine Museum</span> - An indoor museum showcasing naval history and submarine technology.",
+          "<span class='place-name'>Bhavani Island</span> - A river island with recreational activities, water sports, and resort facilities.",
+          "<span class='place-name'>Rajiv Gandhi Park</span> - A vibrant urban park with children's play areas and well-maintained gardens.",
+          "<span class='place-name'>Kambalakonda Wildlife Sanctuary</span> - A conservation area within city limits with hiking trails and wildlife.",
+          "<span class='place-name'>Bapu Museum</span> - A modernized museum showcasing ancient sculptures, coins, and artifacts.",
+          "<span class='place-name'>Thummalapalli Kalakshetram</span> - A cultural center hosting various performances and exhibitions.",
+          "<span class='place-name'>CMR Shopping Mall</span> - One of the largest shopping destinations in Andhra with entertainment options."
+        ],
+        "Wildlife & Safaris": [
+          "<span class='place-name'>Sri Venkateswara National Park</span> - Home to diverse flora and fauna in the Eastern Ghats around Tirupati.",
+          "<span class='place-name'>Coringa Wildlife Sanctuary</span> - India's second largest mangrove forest with unique ecosystem and bird species.",
+          "<span class='place-name'>Nagarjunsagar-Srisailam Tiger Reserve</span> - The largest tiger reserve in India covering five districts.",
+          "<span class='place-name'>Kolleru Lake Bird Sanctuary</span> - One of the largest freshwater lakes in India and a paradise for bird watchers.",
+          "<span class='place-name'>Rollapadu Wildlife Sanctuary</span> - Known for the endangered Great Indian Bustard and blackbuck populations.",
+          "<span class='place-name'>Kambalakonda Wildlife Sanctuary</span> - A conservation area near Visakhapatnam with hiking trails and wildlife.",
+          "<span class='place-name'>Pulicat Lake Bird Sanctuary</span> - A brackish water lagoon famous for its flamingo population and migratory birds.",
+          "<span class='place-name'>Krishna Wildlife Sanctuary</span> - A coastal wetland with mangrove forests and rare fishing cat populations.",
+          "<span class='place-name'>Telineelapuram Bird Sanctuary</span> - A haven for migratory birds, especially spot-billed pelicans and painted storks.",
+          "<span class='place-name'>Atapaka Bird Sanctuary</span> - Part of Kolleru Lake with thousands of migratory birds during winter months.",
+          "<span class='place-name'>Nelapattu Bird Sanctuary</span> - Known for hosting the largest pelicanry in Southeast Asia.",
+          "<span class='place-name'>Rajiv Gandhi National Park</span> - A wildlife sanctuary on the outskirts of Visakhapatnam with various deer species.",
+          "<span class='place-name'>Kunavaram Wildlife Sanctuary</span> - Located in the Eastern Ghats with rich biodiversity and tribal culture.",
+          "<span class='place-name'>Gundla Brahmeswaram Wildlife Sanctuary</span> - A part of the Nallamala forests with diverse wildlife.",
+          "<span class='place-name'>Papikonda National Park</span> - A beautiful sanctuary along the Godavari River with rich biodiversity.",
+          "<span class='place-name'>Kondapalli Reserve Forest</span> - Home to unique flora and fauna near Vijayawada.",
+          "<span class='place-name'>Uppalapadu Bird Sanctuary</span> - A village pond turned protected area hosting thousands of spot-billed pelicans.",
+          "<span class='place-name'>Koundinya Wildlife Sanctuary</span> - Known for elephant conservation and various wildlife sightings.",
+          "<span class='place-name'>Tada Wildlife Sanctuary</span> - A forest reserve in the Tada Hills known for its sustainable tourism initiatives.",
+          "<span class='place-name'>Eturnagaram Wildlife Sanctuary</span> - One of the oldest sanctuaries in the region with rich tribal culture."
+        ]
+      };
+  
+      const itineraryDiv = document.createElement("div");
+      itineraryDiv.innerHTML = `<h2>Your Perfect Andhra Pradesh Adventure</h2>`;
+  
+      const summary = document.createElement("p");
+      summary.style.lineHeight = "1.6";
+      summary.style.fontSize = "18px";
+      summary.style.marginBottom = "25px";
+  
+      let intro = `Your journey across Andhra Pradesh is crafted with rich spiritual heritage, diverse landscapes, and vibrant culture in mind. Over the course of ${plan.duration} memorable days, you'll dive into the tranquil hills of Araku, soak in the energy of sacred temples like Tirupati, bask on sunlit beaches along the Vizag coast, and explore ancient marvels such as the Undavalli Caves and Belum Caves. Whether you're a nature lover, a culture seeker, or a spiritual traveler, this itinerary blends relaxation and exploration perfectly within your ₹${budget} budget.`;
+      summary.textContent = intro;
+      itineraryDiv.appendChild(summary);
+  
+      const heading = document.createElement("h3");
+      heading.textContent = "Your Day-by-Day Adventure";
+      heading.style.color = "#0077b6";
+      heading.style.marginTop = "30px";
+      itineraryDiv.appendChild(heading);
+  
+      const dayDetails = document.createElement("div");
+      dayDetails.style.lineHeight = "1.6";
+      dayDetails.style.fontSize = "17px";
+  
+      for (let day = 1; day <= plan.duration; day++) {
+        const interest = interests[(day - 1) % interests.length];
+        const options = destinations[interest] || ["Enjoy a flexible day exploring local culture, food, and experiences."];
+        const fullDetail = options[(day - 1) % options.length];
+  
+        const dayPlan = document.createElement("div");
+        dayPlan.className = "detail";
+        dayPlan.innerHTML = `<strong>Day ${day}:</strong> ${fullDetail}`;
+        dayDetails.appendChild(dayPlan);
+      }
+  
+      itineraryDiv.appendChild(dayDetails);
+      document.querySelector("section").appendChild(itineraryDiv);
+    } else {
+      document.querySelector("section").innerHTML +=
+        "<p style='color: red;'>No Andhra Pradesh plan found. Please go back and fill the form.</p>";
+    }
+  });
+</script>
+<footer style="text-align: center; padding: 20px;">
+  <p>© 2025 Andhra Pradesh Explorer. Crafted with ❤️ for your perfect getaway.</p>
+</footer>
+</body>
+</html>
