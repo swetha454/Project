@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Explore Kerala - Smart Planner</title>
+  <a href="explore.html">KERALA</a>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #2a91ec, #08b6bf);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #0077b6;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    ul {
+      font-size: 18px;
+    }
+
+    button {
+      background-color: #0f9dea;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #074867;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Kerala</h1>
+  <p>Discover the Backwaters, Beaches, Hills & Culture</p>
+</header>
+
+<section>
+  <h2>Famous Cities & Places</h2>
+  <ul>
+    <li>Kochi</li>
+    <li>Alleppey</li>
+    <li>Wayanad</li>
+    <li>Munnar</li>
+    <li>Thekkady</li>
+  </ul>
+ 
+  <h2>Top Sightseeing Spots</h2>
+  <ul>
+    <li>Backwaters of Alleppey</li>
+    <li>Tea Gardens of Munnar</li>
+    <li>Fort Kochi</li>
+    <li>Thekkady Wildlife Sanctuary</li>
+  </ul>
+
+ 
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Houseboats_at_Kerala_Backwaters.jpg" alt="Kerala Backwaters" />
+ 
+  <a href="plankerala.html">
+    <button>Plan This Trip</button>
+  </a>
+  
+</section>
+<!-- Inside <head> -->
+  <script>
+    function savePlan(event) {
+      event.preventDefault(); // Prevent form submission
+  
+      // Get values from form inputs
+      const startDate = document.getElementById("start-date").value;
+      const endDate = document.getElementById("end-date").value;
+      const travelers = document.getElementById("travelers").value;
+      const budget = document.getElementById("budget").value;
+      const travelType = document.getElementById("travel-type").value;
+  
+      // Get multiple selected interests
+      const interestsSelect = document.getElementById("interests");
+      const interests = Array.from(interestsSelect.selectedOptions).map(opt => opt.value);
+  
+      // Save to localStorage
+      localStorage.setItem("keralaPlan", JSON.stringify({
+        startDate,
+        endDate,
+        travelers,
+        budget,
+        travelType,
+        interests
+      }));
+  
+      // Redirect to summary page
+      window.location.href = "kerala-summary.html";
+    }
+  </script>
+  
+
+</body>
+</html>
