@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Explore Telangana - Smart Planner</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #800080, #ff00ff);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #8e44ad;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    ul {
+      font-size: 18px;
+    }
+
+    button {
+      background-color: #9b59b6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #6c3483;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Telangana</h1>
+  <p>Historic Forts, Monuments & the Spirit of Hyderabad</p>
+</header>
+
+<section>
+  <h2>Famous Cities & Places</h2>
+  <ul>
+    <li>Hyderabad</li>
+    <li>Warangal</li>
+    <li>Nizamabad</li>
+    <li>Medak</li>
+    <li>Khammam</li>
+  </ul>
+
+  <h2>Top Sightseeing Spots</h2>
+  <ul>
+    <li>Charminar</li>
+    <li>Golconda Fort</li>
+    <li>Hussain Sagar Lake</li>
+    <li>Ramoji Film City</li>
+  </ul>
+
+ 
+
+  <img src="https://media-cdn.tripadvisor.com/media/photo-s/11/f4/ff/11/charminar.jpg" alt="Charminar" />
+  <a href="plantelangana.html">
+    <button>Plan This Trip</button>
+  </a>
+</section>
+
+<!-- Inside <head> -->
+  <script>
+    function savePlan(event) {
+      event.preventDefault(); // Prevent form submission
+  
+      // Get values from form inputs
+      const startDate = document.getElementById("start-date").value;
+      const endDate = document.getElementById("end-date").value;
+      const travelers = document.getElementById("travelers").value;
+      const budget = document.getElementById("budget").value;
+      const travelType = document.getElementById("travel-type").value;
+  
+      // Get multiple selected interests
+      const interestsSelect = document.getElementById("interests");
+      const interests = Array.from(interestsSelect.selectedOptions).map(opt => opt.value);
+  
+      // Save to localStorage
+      localStorage.setItem("telanganaPlan", JSON.stringify({
+        startDate,
+        endDate,
+        travelers,
+        budget,
+        travelType,
+        interests
+      }));
+  
+      // Redirect to summary page
+      window.location.href = "telangana-summary.html";
+    }
+  </script>
+</body>
+</html>
