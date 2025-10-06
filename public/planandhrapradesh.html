@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plan AndhraPradesh Trip - Smart Planner</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2faff;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(to right, #2a91ec, #08b6bf);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #0077b6;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #005f8a;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Plan Your AndhraPradesh Trip</h1>
+  <p>Customize your travel preferences below</p>
+</header>
+
+<section>
+  <h2>Trip Preferences</h2>
+  <form onsubmit="savePlan(event)">
+
+    <label for="start-date">Start Date:</label>
+    <input type="date" id="start-date" required />
+    
+    <label for="end-date">End Date:</label>
+    <input type="date" id="end-date" required />
+    
+
+    <label for="travelers">Number of Travelers:</label>
+    <input type="number" id="travelers" min="1" required />
+
+    <label for="interests">Select Interests:</label>
+    <select id="interests" multiple>
+      <option>Temples & Pilgrimage</option>
+      <option>Nature & Hills</option>
+      <option>Beaches & Coastal</option>
+      <option>Historical & Culture</option>
+      <option>Urban Attractions</option>
+
+    </select>
+
+   
+    <!-- Budget Plan Section -->
+    <h2>Budget Plan</h2>
+
+    <label for="budget">Enter Your Budget (in ₹):</label>
+    <input type="number" id="budget" placeholder="e.g., 15000" min="1000" required />
+
+    <label for="travel-type">Select Travel Type:</label>
+    <select id="travel-type">
+      <option>Economy</option>
+      <option>Standard</option>
+      <option>Luxury</option>
+    </select>
+
+    <button type="submit">Save My Plan</button>
+  </form>
+</section>
+<script>
+  function savePlan(event) {
+    event.preventDefault(); // Prevent form submission
+  
+    // Get values from form inputs
+    const startDate = document.getElementById("start-date").value;
+    const endDate = document.getElementById("end-date").value;
+    const travelers = document.getElementById("travelers").value;
+    const budget = document.getElementById("budget").value;
+    const travelType = document.getElementById("travel-type").value;
+  
+    // Get multiple selected interests
+    const interestsSelect = document.getElementById("interests");
+    const interests = Array.from(interestsSelect.selectedOptions).map(opt => opt.value);
+  
+    // Calculate trip duration
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const duration = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+  
+    // Save to localStorage
+    localStorage.setItem("andhrapradeshPlan", JSON.stringify({
+      startDate,
+      endDate,
+      travelers,
+      budget,
+      travelType,
+      interests,
+      duration
+    }));
+  
+    // Redirect to summary page
+    window.location.href = "andhrapradesh-summary.html";
+  }
+</script>
+
+</body>
+</html>
+  
